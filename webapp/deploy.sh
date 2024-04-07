@@ -1,4 +1,5 @@
 #!/bin/bash
+# Execute this script from the root of this repo.
 
 cp ./notebooks/output/plotly_df.csv ./webapp/
 
@@ -9,6 +10,7 @@ gcloud run deploy toronto-councillor-clustering-p \
     --cpu 1 \
     --memory 1Gi \
     --source webapp \
-    --max-instances 2
+    --max-instances 2 \
+    --region us-east1
 
 rm ./webapp/plotly_df.csv
