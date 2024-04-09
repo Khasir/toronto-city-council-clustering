@@ -6,7 +6,6 @@ from utils import default_text_style
 app = Dash(__name__, use_pages=True)
 app.title = "Toronto City Councillors by Voting Records"
 server = app.server  # Workaround for gunicorn with Dash
-default_text_style = {'textAlign': 'center', 'fontFamily': 'Roboto, Arial, sans-serif'}
 
 app.layout = html.Div([
     html.H1(children="Toronto City Councillors by Voting Records", style=default_text_style),
