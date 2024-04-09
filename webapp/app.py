@@ -9,7 +9,7 @@ server = app.server  # Workaround for gunicorn with Dash
 
 app.layout = html.Div([
     html.H1(children="Toronto City Councillors by Voting Records", style=default_text_style),
-    html.P(children="Last updated April 6, 2024.", style={'textAlign': 'center', 'fontFamily': 'Roboto, Arial, sans-serif', 'font-style': 'italic'}),
+    html.P(children="Data last updated April 6, 2024.", style={'textAlign': 'center', 'fontFamily': 'Roboto, Arial, sans-serif', 'font-style': 'italic'}),
     page_container,
     html.Hr(style={'align': 'center', 'width': '15%', 'size': '0.5'}),
     html.P(
