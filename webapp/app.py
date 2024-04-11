@@ -15,7 +15,7 @@ app.layout = html.Div([
     html.P(
         children=[
             "Data from ",
-            html.A("2006 – 2024", href="https://open.toronto.ca/dataset/members-of-toronto-city-council-voting-record/", target="_blank"),
+            html.A("2009 – 2024", href="https://open.toronto.ca/dataset/members-of-toronto-city-council-voting-record/", target="_blank"),
             " // Made by ",
             html.A("Khasir", href="mailto:khasir.hean@gmail.com"),
             " 2024"

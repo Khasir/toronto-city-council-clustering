@@ -72,16 +72,19 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
         figure.update_layout(
             scene={
                 'xaxis': {
-                    'nticks': 1,
-                    'tickfont': {'size': 1}
+                    # 'nticks': 1,
+                    'tickfont': {'size': 1},
+                    # 'visible': False,
                 },
                 'yaxis': {
-                    'nticks': 1,
-                    'tickfont': {'size': 1}
+                    # 'nticks': 1,
+                    # 'tickfont': {'size': 1},
+                    'visible': False,
                 },
                 'zaxis': {
-                    'nticks': 1,
-                    'tickfont': {'size': 1}
+                    # 'nticks': 1,
+                    # 'tickfont': {'size': 1},
+                    'visible': False,
                 }
             },
             legend={
@@ -116,8 +119,8 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
         figure.update_layout(
             scene={
                 'xaxis': {
-                    'nticks': 1,
-                    'tickfont': {'size': 1},
+                    # 'nticks': 1,
+                    # 'tickfont': {'size': 1},
                     'showticklabels': False,
                 },
                 'yaxis': {
