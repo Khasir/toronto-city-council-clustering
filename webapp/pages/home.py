@@ -17,7 +17,7 @@ except FileNotFoundError:
 
 layout = dash.html.Div([
     dash.html.P(children="Councillors closer together vote together more often on municipal items.", style=default_text_style),
-    dash.html.P(children="Click and drag to rotate. Scroll to zoom.", style=default_text_style),
+    dash.html.P(children="Hover over points. Click and drag to rotate. Scroll to zoom.", style=default_text_style),
     dash.dcc.Loading(
         dash.dcc.Graph(figure=generate_graph(df, 3, 5), id='figure-1', style={'width': '80%', 'height': '100%', 'margin': '0 auto', 'border': '0.5px black solid'}),
         type='default'

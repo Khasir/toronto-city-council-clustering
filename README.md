@@ -16,3 +16,4 @@ Data obtained from City of Toronto's [Open Data](https://open.toronto.ca/dataset
 - Filter by agenda topic (policing etc) (hard?)
 - Add social icons
 - Review explanation
+- Make mayors larger
