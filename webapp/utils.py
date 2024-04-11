@@ -1,3 +1,7 @@
+import json
+import os
+from typing import Dict
+
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -7,7 +11,7 @@ from sklearn.decomposition import PCA
 
 
 default_text_style = {'textAlign': 'center', 'fontFamily': 'Roboto, Arial, sans-serif'}
-df_cache = {}  # Serialized parameters -> Filename TODO
+CACHE_DIR = './.cache/'  # Contains cached Dataframes
 
 
 def reduce_dimensionality(df: pd.DataFrame, num_dimensions: int) -> pd.DataFrame:
@@ -138,10 +142,38 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
     return figure
 
 
+def serialize_for_cache(num_dimensions: int, num_clusters: int) -> str:
+    serialized = f'nd-{num_dimensions}-nc-{num_clusters}.csv'
+    return serialized
+
+
+def load_df_cache(num_dimensions: int, num_clusters: int) -> pd.DataFrame:
+    """Return the dictionary containing references to the cached Dataframes."""
+    try:
+        cached_files = os.listdir(CACHE_DIR)
+    except FileNotFoundError:
+        return None
+    serialized = serialize_for_cache(num_dimensions, num_clusters)
+    if serialized in cached_files:
+        return pd.read_csv(os.path.join(CACHE_DIR, serialized))
+    return None
+
+
+def cache_df(df: pd.DataFrame, num_dimensions: int, num_clusters: int) -> None:
+    """Cache a Dataframe, overwriting any existing one."""
+    serialized = serialize_for_cache(num_dimensions, num_clusters)
+    os.makedirs(CACHE_DIR, exist_ok=True)
+    df.to_csv(os.path.join(CACHE_DIR, serialized))
+
+
 def generate_graph(councillor_votes_df: pd.DataFrame, num_dimensions: int, num_clusters: int, random_state: int = 42) -> go.Figure:
     assert num_dimensions in (2, 3), "Currently only 2- and 3-dimensional graphs are supported."
-    reduced_df = reduce_dimensionality(councillor_votes_df, num_dimensions)
-    clusters = generate_clusters(reduced_df, num_clusters, random_state)
-    plotly_df = prepare_plotly_df(councillor_votes_df.index.to_list(), reduced_df, clusters)
+
+    plotly_df = load_df_cache(num_dimensions, num_clusters)
+    if plotly_df is None:
+        reduced_df = reduce_dimensionality(councillor_votes_df, num_dimensions)
+        clusters = generate_clusters(reduced_df, num_clusters, random_state)
+        plotly_df = prepare_plotly_df(councillor_votes_df.index.to_list(), reduced_df, clusters)
+        cache_df(plotly_df, num_dimensions, num_clusters)
     figure = create_figure(plotly_df, num_dimensions)
     return figure
