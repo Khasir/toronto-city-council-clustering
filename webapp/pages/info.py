@@ -3,7 +3,11 @@ import dash
 from utils import default_text_style
 
 
-dash.register_page(__name__)
+dash.register_page(
+    __name__,
+    title='Toronto City Councillors by Voting Records - More Info',
+    description="Learn more about the Toronto city council visualization."
+)
 
 info_text = ''
 with open('./pages/info.md', 'r', encoding='utf-8') as file:

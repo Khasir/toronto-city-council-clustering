@@ -10,7 +10,7 @@ In the example below, we can see that Alejandra Bravo voted "yes" to agenda item
 |--|--|--|--|--|--|--|--|--|--|--|--|
 |3|2022-2026|Alejandra|Bravo|City Council||2023.FM1.8|Election of the Speaker and Deputy Speaker|Nomination of a Member|Yes|Carried, 25-1|Majority required - Appoint Councillor Nunziata as Speaker|
 
-I gathered all these rows and reformmated them into a new table. The table above has each vote on a separate row, but for my purposes, I needed densify each row to show how a given councillor voted for **all** agenda items. For example:
+I gathered all these rows and reformmated them into a new table. The table above has each vote on a separate row, but for my purposes, I needed to concentrate the rows to show how a given councillor voted for **all** agenda items. For example:
 
 |Councillor|2009.IA30.5|2009.RM30.5|2009.EX28.8|(skipping thousands of items)|2024.PB16.9|
 |--|--|--|--|--|--|

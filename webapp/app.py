@@ -4,11 +4,11 @@ from utils import default_text_style
 
 
 app = Dash(__name__, use_pages=True)
-app.title = "Toronto City Councillors by Voting Records"
+# app.title = "Toronto City Councillors by Voting Records"
 server = app.server  # Workaround for gunicorn with Dash
 
 app.layout = html.Div([
-    html.H1(children="Toronto City Councillors by Voting Records", style=default_text_style),
+    html.H1(children="[WIP] Toronto City Councillors by Voting Records", style=default_text_style),
     html.P(children="Data last updated April 6, 2024.", style={'textAlign': 'center', 'fontFamily': 'Roboto, Arial, sans-serif', 'font-style': 'italic'}),
     page_container,
     html.Hr(style={'align': 'center', 'width': '15%', 'size': '0.5'}),

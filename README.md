@@ -11,9 +11,7 @@ Data obtained from City of Toronto's [Open Data](https://open.toronto.ca/dataset
 - Add search/dropdown by name
 - Click on point to go to their website
 - Make legend easier to parse
-- View by time period (mayorship?)
 - Highlight by person (dropdown?)
 - Filter by agenda topic (policing etc) (hard?)
 - Add social icons
 - Review explanation
-- Make mayors larger

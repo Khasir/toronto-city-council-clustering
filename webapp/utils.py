@@ -43,6 +43,7 @@ def prepare_plotly_df(councillor_names: list, points: pd.DataFrame, clusters: np
 
 
 def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
+    df['point_size'] = df['mayor'].map(lambda x: 5 if x == 'Was mayor' else 3)
     if num_dimensions == 3:
         figure = go.Figure(px.scatter_3d(
             df,
@@ -52,9 +53,10 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
             hover_name='councillor',
             color='cluster',
             symbol='mayor',
+            size='point_size',
             width=None,
             height=600,
-            hover_data={'x': False, 'y': False, 'z': False},
+            hover_data={'x': False, 'y': False, 'z': False, 'point_size': False},
             opacity=0.75,
             labels={
                 'x': '',
@@ -103,9 +105,10 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
             hover_name='councillor',
             color='cluster',
             symbol='mayor',
+            size='point_size',
             width=None,
             height=600,
-            hover_data={'x': False, 'y': False},
+            hover_data={'x': False, 'y': False, 'point_size': False},
             opacity=0.75,
             labels={
                 'x': '',
@@ -143,38 +146,47 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
     return figure
 
 
-def serialize_for_cache(num_dimensions: int, num_clusters: int) -> str:
-    serialized = f'nd-{num_dimensions}-nc-{num_clusters}.csv'
+def serialize_for_cache(num_dimensions: int, num_clusters: int, min_year: int, max_year: int) -> str:
+    serialized = f'nd-{num_dimensions}-nc-{num_clusters}-{min_year}-{max_year}.csv'
     return serialized
 
 
-def load_df_cache(num_dimensions: int, num_clusters: int) -> pd.DataFrame:
+def load_df_cache(num_dimensions: int, num_clusters: int, min_year: int, max_year: int) -> pd.DataFrame:
     """Return the dictionary containing references to the cached Dataframes."""
     try:
         cached_files = os.listdir(CACHE_DIR)
     except FileNotFoundError:
         return None
-    serialized = serialize_for_cache(num_dimensions, num_clusters)
+    serialized = serialize_for_cache(num_dimensions, num_clusters, min_year, max_year)
     if serialized in cached_files:
         return pd.read_csv(os.path.join(CACHE_DIR, serialized))
     return None
 
 
-def cache_df(df: pd.DataFrame, num_dimensions: int, num_clusters: int) -> None:
+def cache_df(df: pd.DataFrame, num_dimensions: int, num_clusters: int, min_year: int, max_year: int) -> None:
     """Cache a Dataframe, overwriting any existing one."""
-    serialized = serialize_for_cache(num_dimensions, num_clusters)
+    serialized = serialize_for_cache(num_dimensions, num_clusters, min_year, max_year)
     os.makedirs(CACHE_DIR, exist_ok=True)
     df.to_csv(os.path.join(CACHE_DIR, serialized))
 
 
-def generate_graph(councillor_votes_df: pd.DataFrame, num_dimensions: int, num_clusters: int, random_state: int = 42) -> go.Figure:
+def generate_graph(councillor_votes_df: pd.DataFrame, num_dimensions: int, num_clusters: int, min_year: int, max_year: int, random_state: int = 42) -> go.Figure:
     assert num_dimensions in (2, 3), "Currently only 2- and 3-dimensional graphs are supported."
 
-    plotly_df = load_df_cache(num_dimensions, num_clusters)
+    plotly_df = load_df_cache(num_dimensions, num_clusters, min_year, max_year)
     if plotly_df is None:
-        reduced_df = reduce_dimensionality(councillor_votes_df, num_dimensions)
+        # Limit to min and max years
+        columns_to_drop = []
+        for column in councillor_votes_df:
+            year = int(column[:4])  # The year is encoded in the agenda item name
+            if not (min_year <= year <= max_year):
+                columns_to_drop.append(column)
+        councillor_votes_filtered_years_df = councillor_votes_df.drop(columns=columns_to_drop)
+        # TODO drop councillors who did not vote in the years applicable
+
+        reduced_df = reduce_dimensionality(councillor_votes_filtered_years_df, num_dimensions)
         clusters = generate_clusters(reduced_df, num_clusters, random_state)
         plotly_df = prepare_plotly_df(councillor_votes_df.index.to_list(), reduced_df, clusters)
-        cache_df(plotly_df, num_dimensions, num_clusters)
+        cache_df(plotly_df, num_dimensions, num_clusters, min_year, max_year)
     figure = create_figure(plotly_df, num_dimensions)
     return figure
