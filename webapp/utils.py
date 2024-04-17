@@ -29,9 +29,9 @@ def prepare_plotly_df(councillor_names: list, points: pd.DataFrame, clusters: np
     plotly_rows = []
 
     if points.shape[1] == 3:
-        headers = ['councillor', 'x', 'y', 'z', 'cluster', 'mayor']
+        headers = ['Councillor', 'x', 'y', 'z', 'Cluster', 'Mayor']
     else:
-        headers = ['councillor', 'x', 'y', 'cluster', 'mayor']
+        headers = ['Councillor', 'x', 'y', 'Cluster', 'Mayor']
     past_mayors = 'Olivia Chow', 'John Tory', 'Rob Ford', 'David Miller'
     for i, name in enumerate(councillor_names):
         row = [name] + list(points[i])
@@ -43,16 +43,16 @@ def prepare_plotly_df(councillor_names: list, points: pd.DataFrame, clusters: np
 
 
 def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
-    df['point_size'] = df['mayor'].map(lambda x: 5 if x == 'Was mayor' else 3)
+    df['point_size'] = df['Mayor'].map(lambda x: 5 if x == 'Was mayor' else 3)
     if num_dimensions == 3:
         figure = go.Figure(px.scatter_3d(
             df,
             x='x',
             y='y',
             z='z',
-            hover_name='councillor',
-            color='cluster',
-            symbol='mayor',
+            hover_name='Councillor',
+            color='Cluster',
+            symbol='Mayor',
             size='point_size',
             width=None,
             height=600,
@@ -64,8 +64,8 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
                 'z': ''
             },
             category_orders={
-                'mayor': ['Was mayor', 'Was not mayor'],
-                'cluster': [f'Cluster {i + 1}' for i in range(num_dimensions)]
+                'Mayor': ['Was mayor', 'Was not mayor'],
+                'Cluster': [f'Cluster {i + 1}' for i in range(num_dimensions)]
             }
         ))
         # Workaround to hide axes
@@ -102,9 +102,9 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
             df,
             x='x',
             y='y',
-            hover_name='councillor',
-            color='cluster',
-            symbol='mayor',
+            hover_name='Councillor',
+            color='Cluster',
+            symbol='Mayor',
             size='point_size',
             width=None,
             height=600,
@@ -114,7 +114,7 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
                 'x': '',
                 'y': '',
             },
-            category_orders={'mayor': ['Was mayor', 'Was not mayor']}
+            category_orders={'Mayor': ['Was mayor', 'Was not mayor']}
         ))
         # Workaround to hide axes
         figure.update_layout(
@@ -175,18 +175,26 @@ def generate_graph(councillor_votes_df: pd.DataFrame, num_dimensions: int, num_c
 
     plotly_df = load_df_cache(num_dimensions, num_clusters, min_year, max_year)
     if plotly_df is None:
-        # Limit to min and max years
+        # Limit agenda items to min and max years
         columns_to_drop = []
         for column in councillor_votes_df:
             year = int(column[:4])  # The year is encoded in the agenda item name
             if not (min_year <= year <= max_year):
                 columns_to_drop.append(column)
         councillor_votes_filtered_years_df = councillor_votes_df.drop(columns=columns_to_drop)
-        # TODO drop councillors who did not vote in the years applicable
 
+        # Drop councillors who did not vote in the years applicable
+        # TODO for now, we'll drop if absent as well. We should try to keep absences and only drop N/A in the future.
+        councillors_to_drop = []
+        for councillor_name in councillor_votes_filtered_years_df.index:
+            if councillor_votes_filtered_years_df.loc[councillor_name].isin([-1.]).all():  # -1 -> N/A or absent
+                councillors_to_drop.append(councillor_name)
+        councillor_votes_filtered_years_df.drop(index=councillors_to_drop, inplace=True)
+
+        # Process for visualization
         reduced_df = reduce_dimensionality(councillor_votes_filtered_years_df, num_dimensions)
         clusters = generate_clusters(reduced_df, num_clusters, random_state)
-        plotly_df = prepare_plotly_df(councillor_votes_df.index.to_list(), reduced_df, clusters)
+        plotly_df = prepare_plotly_df(councillor_votes_filtered_years_df.index.to_list(), reduced_df, clusters)
         cache_df(plotly_df, num_dimensions, num_clusters, min_year, max_year)
     figure = create_figure(plotly_df, num_dimensions)
     return figure

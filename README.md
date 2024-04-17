@@ -16,3 +16,4 @@ Data obtained from City of Toronto's [Open Data](https://open.toronto.ca/dataset
 - Add social icons
 - Review explanation
 - Add 'yes', 'no' and 'absent' votes to hover text
+- Use hovertemplate and annotations to customize hover text? https://github.com/plotly/dash-sample-apps/blob/main/apps/dash-clinical-analytics/app.py#L180
