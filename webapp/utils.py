@@ -118,20 +118,13 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
         ))
         # Workaround to hide axes
         figure.update_layout(
-            scene={
-                'xaxis': {
-                    # 'nticks': 1,
-                    # 'tickfont': {'size': 1},
-                    'showticklabels': False,
-                },
-                'yaxis': {
-                    'nticks': 1,
-                    'tickfont': {'size': 1},
-                    'showticklabels': False,
-                    'visible': False,
-                    'ticks': '',
-                    'showline': False
-                },
+            xaxis={
+                'visible': False,
+                'showticklabels': False,
+            },
+            yaxis={
+                'visible': False,
+                'showticklabels': False,
             },
             legend={
                 'yanchor': 'top',

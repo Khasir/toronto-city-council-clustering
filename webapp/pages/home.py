@@ -16,11 +16,12 @@ try:
     df = pd.read_csv('./raw_councillor_df.csv', index_col=0)
 except FileNotFoundError:
     df = pd.read_csv('../notebooks/output/raw_councillor_df.csv', index_col=0)
+    # df = pd.read_csv('../notebooks/output/raw_councillor_df_absent_0.5_na_0.5.csv', index_col=0)
 
 layout = dash.html.Div([
     dash.html.Div([
         dash.html.P(children="Councillors closer together vote together more often on municipal items.", style=default_text_style),
-        dash.html.P(children="Click and drag to rotate. Scroll to zoom.", style=default_text_style),
+        dash.html.P(children="Click and drag to rotate. Scroll to zoom. Right-click and drag to pan.", style=default_text_style),
     ]),
 
     # Figure, buttons and sliders
@@ -33,7 +34,7 @@ layout = dash.html.Div([
                     {'label': '3D', 'value': 3},
                     # {'label': '4D', 'value': 4, 'disabled': True, 'title': 'JK'}
                 ],
-                value=3,
+                value=2,
                 id='dimension-selector',
                 labelStyle=default_text_style
             ),
@@ -78,7 +79,7 @@ layout = dash.html.Div([
         ], style={'width': '89%', 'display': 'inline-block'}),
 
     ], style={'width': '80%', 'display': 'flex', 'margin': '0 auto', 'border': '1px black solid', 'padding': '1em'}),
-    dash.html.P(dash.dcc.Link("Explanation", href="/info"), style=default_text_style),
+    dash.html.P(dash.dcc.Link("More info", href="/info"), style=default_text_style),
 ])
 
 @dash.callback(
@@ -86,7 +87,7 @@ layout = dash.html.Div([
     dash.Input('year-slider', 'value'),
     dash.Input('dimension-selector', 'value')
 )
-def update_figure(years, dimensions):
+def update_figure(years: list, dimensions: int):
     min_year, max_year = min(years), max(years)
     figure = generate_graph(df, dimensions, 5, min_year, max_year)
     return figure

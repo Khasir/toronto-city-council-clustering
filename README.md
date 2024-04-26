@@ -9,7 +9,7 @@ Data obtained from City of Toronto's [Open Data](https://open.toronto.ca/dataset
 
 ## Ideas
 - Add search/dropdown by name
-- Click on point to go to their website
+- Click on point to go to their website?
 - Make legend easier to parse
 - Highlight by person (dropdown?)
 - Filter by agenda topic (policing etc) (hard?)
@@ -17,3 +17,5 @@ Data obtained from City of Toronto's [Open Data](https://open.toronto.ca/dataset
 - Review explanation
 - Add 'yes', 'no' and 'absent' votes to hover text
 - Use hovertemplate and annotations to customize hover text? https://github.com/plotly/dash-sample-apps/blob/main/apps/dash-clinical-analytics/app.py#L180
+- Figure out how to make legend not hide points in 2D
+- Try making N/A votes the average of a given councillor's other non-N/A votes
