@@ -18,4 +18,4 @@ Data obtained from City of Toronto's [Open Data](https://open.toronto.ca/dataset
 - Add 'yes', 'no' and 'absent' votes to hover text
 - Use hovertemplate and annotations to customize hover text? https://github.com/plotly/dash-sample-apps/blob/main/apps/dash-clinical-analytics/app.py#L180
 - Figure out how to make legend not hide points in 2D
-- Try making N/A votes the average of a given councillor's other non-N/A votes
+- Try making N/A votes the average of a given councillor's other non-N/A votes (see John Tory and Olivia Chow in 2023)

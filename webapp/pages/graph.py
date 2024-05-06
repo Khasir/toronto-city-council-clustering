@@ -27,6 +27,19 @@ layout = dash.html.Div([
     # Figure, buttons and sliders
     dash.html.Div([
 
+        # Main graph
+        dash.html.Div([
+            dash.dcc.Loading(
+                dash.dcc.Graph(
+                    id='figure-1',
+                    style={'border': '0.5px black dotted'}
+                    # style={'width': '80%', 'height': '100%', 'margin': '0 auto', 'border': '0.5px black solid'}
+                ),
+                type='dot'
+            ),
+        ], style={'width': '89%', 'display': 'inline-block'}),
+
+        # Options
         dash.html.Div([
             # 2D / 3D
             dash.dcc.RadioItems([
@@ -65,18 +78,6 @@ layout = dash.html.Div([
                 vertical=True,
             ),
         ], style={'width': '9%', 'height': '100%', 'display': 'grid'}),
-
-        # Main graph
-        dash.html.Div([
-            dash.dcc.Loading(
-                dash.dcc.Graph(
-                    id='figure-1',
-                    style={'border': '0.5px black dotted'}
-                    # style={'width': '80%', 'height': '100%', 'margin': '0 auto', 'border': '0.5px black solid'}
-                ),
-                type='dot'
-            ),
-        ], style={'width': '89%', 'display': 'inline-block'}),
 
     ], style={'width': '80%', 'display': 'flex', 'margin': '0 auto', 'border': '1px black solid', 'padding': '1em'}),
     dash.html.P(dash.dcc.Link("More info", href="/info"), style=default_text_style),

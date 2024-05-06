@@ -9,6 +9,7 @@ from sklearn.decomposition import PCA
 
 
 default_text_style = {'textAlign': 'center', 'fontFamily': 'Roboto, Arial, sans-serif'}
+title_text_style = {'textAlign': 'center', 'fontFamily': 'Roboto, Arial, sans-serif', 'color': '#144475'}
 CACHE_DIR = './.cache/'  # Contains cached Dataframes
 
 
@@ -116,7 +117,6 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
             },
             category_orders={'Mayor': ['Was mayor', 'Was not mayor']}
         ))
-        # Workaround to hide axes
         figure.update_layout(
             xaxis={
                 'visible': False,
@@ -128,12 +128,14 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
             },
             legend={
                 'yanchor': 'top',
-                'y': 0.95,
+                'y': 1.05,
                 'xanchor': 'left',
-                'x': 0.02,
+                'x': -0.05,
                 'title': 'Legend',
                 'font': {'family': 'Roboto, Arial'}
             },
+            plot_bgcolor='white',
+            # plot_bgcolor='#ebdec7',
         )
 
     return figure
