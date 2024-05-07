@@ -128,9 +128,9 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
             },
             legend={
                 'yanchor': 'top',
-                'y': 1.05,
+                'y': 1.0,
                 'xanchor': 'left',
-                'x': -0.05,
+                'x': -0.25,
                 'title': 'Legend',
                 'font': {'family': 'Roboto, Arial'}
             },

@@ -37,49 +37,58 @@ layout = dash.html.Div([
                 ),
                 type='dot'
             ),
-        ], style={'width': '89%', 'display': 'inline-block'}),
+        ], style={'width': '75%', 'display': 'inline-block', 'height': '100%'}),
 
         # Options
         dash.html.Div([
-            # 2D / 3D
-            dash.dcc.RadioItems([
-                    {'label': '2D', 'value': 2},
-                    {'label': '3D', 'value': 3},
-                    # {'label': '4D', 'value': 4, 'disabled': True, 'title': 'JK'}
-                ],
-                value=2,
-                id='dimension-selector',
-                labelStyle=default_text_style
-            ),
-            # Year slider
-            dash.dcc.RangeSlider(
-                2009, 2024, 1,
-                value=[2014, 2023],
-                id='year-slider',
-                marks={
-                    year: {'label': str(year), 'style': default_text_style} for year in range(2009, 2025)
-                    # 2009: {'label': '2009', 'style': default_text_style},
-                    # 2010: {'label': '2010', 'style': default_text_style},
-                    # 2011: {'label': '2011', 'style': default_text_style},
-                    # 2012: {'label': '2012', 'style': default_text_style},
-                    # 2013: {'label': '2013', 'style': default_text_style},
-                    # 2014: {'label': '2014', 'style': default_text_style},
-                    # 2015: {'label': '2015', 'style': default_text_style},
-                    # 2016: {'label': '2016', 'style': default_text_style},
-                    # 2017: {'label': '2017', 'style': default_text_style},
-                    # 2018: {'label': '2018', 'style': default_text_style},
-                    # 2019: {'label': '2019', 'style': default_text_style},
-                    # 2020: {'label': '2020', 'style': default_text_style},
-                    # 2021: {'label': '2021', 'style': default_text_style},
-                    # 2022: {'label': '2022', 'style': default_text_style},
-                    # 2023: {'label': '2023', 'style': default_text_style},
-                    # 2024: {'label': '2024', 'style': default_text_style},
-                },
-                vertical=True,
-            ),
-        ], style={'width': '9%', 'height': '100%', 'display': 'grid'}),
+            dash.html.Div([
+                # 2D / 3D
+                dash.dcc.RadioItems([
+                        {'label': '2D', 'value': 2},
+                        {'label': '3D', 'value': 3},
+                        # {'label': '4D', 'value': 4, 'disabled': True, 'title': 'JK'}
+                    ],
+                    value=2,
+                    id='dimension-selector',
+                    labelStyle=default_text_style
+                ),
+            ], style={'width': '85%', 'height': '100%'}),
+            dash.html.Div([
+                # Year slider
+                dash.dcc.RangeSlider(
+                    2009, 2024, 1,
+                    value=[2014, 2023],
+                    id='year-slider',
+                    marks={
+                        year: {'label': str(year), 'style': default_text_style} for year in range(2009, 2025)
+                        # 2009: {'label': '2009', 'style': default_text_style},
+                        # 2010: {'label': '2010', 'style': default_text_style},
+                        # 2011: {'label': '2011', 'style': default_text_style},
+                        # 2012: {'label': '2012', 'style': default_text_style},
+                        # 2013: {'label': '2013', 'style': default_text_style},
+                        # 2014: {'label': '2014', 'style': default_text_style},
+                        # 2015: {'label': '2015', 'style': default_text_style},
+                        # 2016: {'label': '2016', 'style': default_text_style},
+                        # 2017: {'label': '2017', 'style': default_text_style},
+                        # 2018: {'label': '2018', 'style': default_text_style},
+                        # 2019: {'label': '2019', 'style': default_text_style},
+                        # 2020: {'label': '2020', 'style': default_text_style},
+                        # 2021: {'label': '2021', 'style': default_text_style},
+                        # 2022: {'label': '2022', 'style': default_text_style},
+                        # 2023: {'label': '2023', 'style': default_text_style},
+                        # 2024: {'label': '2024', 'style': default_text_style},
+                    },
+                    tooltip={
+                        'template': 'Click and drag',
+                        'style': default_text_style
+                    },
+                    vertical=True,
+                    verticalHeight=580,
+                ),
+            ], style={'width': '15%', 'height': '100%'})
+        ], style={'width': '24%', 'height': '100%', 'display': 'flex'}),
 
-    ], style={'width': '80%', 'display': 'flex', 'margin': '0 auto', 'border': '1px black solid', 'padding': '1em'}),
+    ], style={'width': '80%', 'height': '650px', 'display': 'flex', 'margin': '0 auto', 'border': '1px black solid', 'padding': '1em'}),
     dash.html.P(dash.dcc.Link("More info", href="/info"), style=default_text_style),
 ])
 
