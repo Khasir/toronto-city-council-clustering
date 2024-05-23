@@ -13,9 +13,9 @@ dash.register_page(
 
 # Generate DF with the notebook provided: cluster_councillors.ipynb
 try:
-    df = pd.read_csv('./raw_councillor_df.csv', index_col=0)
+    raw_councillor_df = pd.read_csv('./raw_councillor_df.csv', index_col=0)
 except FileNotFoundError:
-    df = pd.read_csv('../notebooks/output/raw_councillor_df.csv', index_col=0)
+    raw_councillor_df = pd.read_csv('../notebooks/output/raw_councillor_df.csv', index_col=0)
     # df = pd.read_csv('../notebooks/output/raw_councillor_df_absent_0.5_na_0.5.csv', index_col=0)
 
 layout = dash.html.Div([
@@ -42,17 +42,30 @@ layout = dash.html.Div([
         # Options
         dash.html.Div([
             dash.html.Div([
-                # 2D / 3D
-                dash.dcc.RadioItems([
-                        {'label': '2D', 'value': 2},
-                        {'label': '3D', 'value': 3},
-                        # {'label': '4D', 'value': 4, 'disabled': True, 'title': 'JK'}
-                    ],
-                    value=2,
-                    id='dimension-selector',
-                    labelStyle=default_text_style
-                ),
-            ], style={'width': '85%', 'height': '100%'}),
+                dash.html.Div([
+                    # 2D / 3D
+                    dash.dcc.RadioItems([
+                            {'label': '2D', 'value': 2},
+                            {'label': '3D', 'value': 3},
+                            # {'label': '4D', 'value': 4, 'disabled': True, 'title': 'JK'}
+                        ],
+                        value=2,
+                        id='dimension-selector',
+                        labelStyle=default_text_style
+                    ),
+                ]),
+                # Councillor list
+                dash.html.Div([
+                    dash.dcc.Dropdown(
+                        [],
+                        placeholder='Search for a councillor...',
+                        id='councillor-dropdown',
+                        maxHeight=300,
+                        style={'fontFamily': 'Roboto, Arial, sans-serif'},
+                    )
+                ])],
+            style={'width': '80%', 'height': '100%'}),
+            dash.html.Div(None, style={'width': '5%', 'height': '100%'}),
             dash.html.Div([
                 # Year slider
                 dash.dcc.RangeSlider(
@@ -94,10 +107,29 @@ layout = dash.html.Div([
 
 @dash.callback(
     dash.Output('figure-1', 'figure'),
+    dash.Output('councillor-dropdown', 'options'),
+    dash.Output('councillor-dropdown', 'value'),
     dash.Input('year-slider', 'value'),
     dash.Input('dimension-selector', 'value')
 )
 def update_figure(years: list, dimensions: int):
     min_year, max_year = min(years), max(years)
-    figure = generate_graph(df, dimensions, 5, min_year, max_year)
-    return figure
+    figure, councillors = generate_graph(raw_councillor_df, dimensions, 1, min_year, max_year, return_councillors=True)
+    dropdown_options = []
+    councillors = set(councillors)
+    for councillor in sorted(raw_councillor_df.index):
+        disabled = councillor not in councillors
+        option = {
+            'label': councillor,
+            'value': councillor,
+            'disabled': disabled
+        }
+        dropdown_options.append(option)
+
+    return figure, dropdown_options, None
+
+@dash.callback(
+    dash.Input('councillor-dropdown', 'value')
+)
+def show_councillor(councillor: str):
+    pass

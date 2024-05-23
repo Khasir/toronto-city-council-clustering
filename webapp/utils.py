@@ -165,8 +165,8 @@ def cache_df(df: pd.DataFrame, num_dimensions: int, num_clusters: int, min_year:
     df.to_csv(os.path.join(CACHE_DIR, serialized))
 
 
-def generate_graph(councillor_votes_df: pd.DataFrame, num_dimensions: int, num_clusters: int, min_year: int, max_year: int, random_state: int = 42) -> go.Figure:
-    assert num_dimensions in (2, 3), "Currently only 2- and 3-dimensional graphs are supported."
+def generate_graph(councillor_votes_df: pd.DataFrame, num_dimensions: int, num_clusters: int, min_year: int, max_year: int, random_state: int = 42, return_councillors: bool = False) -> go.Figure:
+    assert num_dimensions in (2, 3), "Only 2- and 3-dimensional graphs are supported."
 
     plotly_df = load_df_cache(num_dimensions, num_clusters, min_year, max_year)
     if plotly_df is None:
@@ -192,4 +192,6 @@ def generate_graph(councillor_votes_df: pd.DataFrame, num_dimensions: int, num_c
         plotly_df = prepare_plotly_df(councillor_votes_filtered_years_df.index.to_list(), reduced_df, clusters)
         cache_df(plotly_df, num_dimensions, num_clusters, min_year, max_year)
     figure = create_figure(plotly_df, num_dimensions)
+    if return_councillors:
+        return figure, plotly_df['Councillor']
     return figure
