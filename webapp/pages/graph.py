@@ -63,8 +63,22 @@ layout = dash.html.Div([
                         maxHeight=300,
                         style={'fontFamily': 'Roboto, Arial, sans-serif'},
                     )
-                ])],
-            style={'width': '80%', 'height': '100%'}),
+                ]),
+                # Profile pic
+                dash.html.Div([
+                    dash.html.Img(
+                        src='assets/blank-profile-picture-973460_640.png',
+                        id='profile-picture',
+                        width='100%',
+                    )
+                ]),
+                # Biographical blurb
+                dash.html.Div([
+                    dash.html.P(
+                        "░░░░░░"
+                    )
+                ])
+            ], style={'width': '80%', 'height': '100%'}),
             dash.html.Div(None, style={'width': '5%', 'height': '100%'}),
             dash.html.Div([
                 # Year slider
@@ -129,7 +143,11 @@ def update_figure(years: list, dimensions: int):
     return figure, dropdown_options, None
 
 @dash.callback(
+    # dash.Output('figure-1', 'figure'),
+    dash.Output('profile-picture', 'src'),
     dash.Input('councillor-dropdown', 'value')
 )
 def show_councillor(councillor: str):
-    pass
+    if councillor is None:
+        return 'assets/blank-profile-picture-973460_640.png'
+    return f'assets/{councillor}.jpg'
