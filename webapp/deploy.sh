@@ -4,6 +4,9 @@
 if [ -d ./webapp/.cache ]; then
     rm -r ./webapp/.cache
 fi
+if [ -d ./webapp/__pycache__ ]; then
+    rm -r ./webapp/__pycache__
+fi
 
 cp ./notebooks/output/raw_councillor_df.csv ./webapp/
 

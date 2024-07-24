@@ -7,9 +7,25 @@ Data obtained from City of Toronto's [Open Data](https://open.toronto.ca/dataset
 
 **Deployed at https://toronto.klogg.blog/.**
 
+
+## Development Setup
+Set up a virtual environment and install requirements:
+```sh
+mkdir .venv
+python -m venv .venv
+source ./.venv/bin/activate
+pip install --upgrade pip wheel
+pip install -r webapp/requirements.txt
+```
+
+Install [gcloud](https://cloud.google.com/sdk/docs/install).
+
+
+## Updating Data
+Currently, the way to update data is to manually download the CSVs from [Toronto Open Data](https://open.toronto.ca/dataset/members-of-toronto-city-council-voting-record/) to the `./data` folder. Then run the Jupyter Notebook `cluster_councillors.ipynb` to generate the required dataframe for plotting.
+
+
 ## Ideas
-- Add search/dropdown by name
-- Click on point to go to their website?
 - Make legend easier to parse
 - Highlight by person (dropdown?)
 - Filter by agenda topic (policing etc) (hard?)
