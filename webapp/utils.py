@@ -26,7 +26,7 @@ def generate_clusters(df: pd.DataFrame, num_clusters: int, random_state: int) ->
 
 
 def prepare_plotly_df(councillor_names: list, points: pd.DataFrame, clusters: np.ndarray) -> pd.DataFrame:
-    # Prepare dataframe specifically for visualization
+    """Prepare a dataframe specifically for visualization."""
     plotly_rows = []
 
     if points.shape[1] == 3:
@@ -52,7 +52,8 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
             y='y',
             z='z',
             hover_name='Councillor',
-            color='Cluster',
+            # color='Cluster',
+            color='Mayor',
             symbol='Mayor',
             size='point_size',
             width=None,
@@ -66,7 +67,7 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
             },
             category_orders={
                 'Mayor': ['Was mayor', 'Was not mayor'],
-                'Cluster': [f'Cluster {i + 1}' for i in range(num_dimensions)]
+                # 'Cluster': [f'Cluster {i + 1}' for i in range(num_dimensions)]
             }
         ))
         # Workaround to hide axes
@@ -104,7 +105,8 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
             x='x',
             y='y',
             hover_name='Councillor',
-            color='Cluster',
+            # color='Cluster',
+            color='Mayor',
             symbol='Mayor',
             size='point_size',
             width=None,
@@ -166,6 +168,22 @@ def cache_df(df: pd.DataFrame, num_dimensions: int, num_clusters: int, min_year:
 
 
 def generate_graph(councillor_votes_df: pd.DataFrame, num_dimensions: int, num_clusters: int, min_year: int, max_year: int, random_state: int = 42, return_councillors: bool = False) -> go.Figure:
+    """
+    Generate a figure for Plotly/Dash.
+
+    Args:
+        councillor_votes_df (pd.DataFrame): DataFrame containing councillor votes, where rows are councillors and columns are voting records.
+        num_dimensions (int): Number of dimensions to generate the figure in.
+        num_clusters (int): Number of clusters to group the councillors into.
+        min_year (int): Only consider voting records from this year and later.
+        max_year (int): Only consider voting records from this year and earlier.
+        random_state (int, optional): Random seed for clustering. Defaults to 42.
+        return_councillors (bool, optional): Also return a Series of the councillor names. Defaults to False.
+
+    Returns:
+        go.Figure: The figure for display on Plotly/Dash.
+        pandas.Series (optional): List of councillors in the figure.
+    """
     assert num_dimensions in (2, 3), "Only 2- and 3-dimensional graphs are supported."
 
     plotly_df = load_df_cache(num_dimensions, num_clusters, min_year, max_year)
