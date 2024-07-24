@@ -1,7 +1,9 @@
+import os
+
 import dash
 import pandas as pd
 
-from utils import default_text_style, generate_graph
+from utils import default_text_style, generate_graph, BLANK_PROFILE_PIC
 
 
 dash.register_page(
@@ -17,6 +19,8 @@ try:
 except FileNotFoundError:
     raw_councillor_df = pd.read_csv('../notebooks/output/raw_councillor_df.csv', index_col=0)
     # df = pd.read_csv('../notebooks/output/raw_councillor_df_absent_0.5_na_0.5.csv', index_col=0)
+
+biographies_df = pd.read_csv('assets/biographies.csv')
 
 layout = dash.html.Div([
     dash.html.Div([
@@ -67,17 +71,15 @@ layout = dash.html.Div([
                 # Profile pic
                 dash.html.Div([
                     dash.html.Img(
-                        src='assets/blank-profile-picture-973460_640.png',
+                        src=BLANK_PROFILE_PIC,
                         id='profile-picture',
                         width='100%',
                     )
                 ]),
                 # Biographical blurb
-                dash.html.Div([
-                    dash.html.P(
-                        "░░░░░░"
-                    )
-                ])
+                dash.html.Div([''],
+                    id='bio-text'
+                )
             ], style={'width': '80%', 'height': '100%'}),
             dash.html.Div(None, style={'width': '5%', 'height': '100%'}),
             dash.html.Div([
@@ -145,9 +147,34 @@ def update_figure(years: list, dimensions: int):
 @dash.callback(
     # dash.Output('figure-1', 'figure'),
     dash.Output('profile-picture', 'src'),
+    dash.Output('bio-text', 'children'),
     dash.Input('councillor-dropdown', 'value')
 )
-def show_councillor(councillor: str):
+def show_councillor_info(councillor: str):
     if councillor is None:
-        return 'assets/blank-profile-picture-973460_640.png'
-    return f'assets/{councillor}.jpg'
+        return BLANK_PROFILE_PIC, ['']
+        
+    # Pic
+    councillor_profile_pic = f'assets/{councillor}.jpg'
+
+    # Text
+    query = pd.DataFrame([councillor], columns=['councillor'])
+    search_result = pd.merge(biographies_df, query, how='inner', left_on='Councillor', right_on='councillor')
+    assert not search_result.empty
+    bio_text = dash.html.P(
+        search_result.iloc[0]['Biography'],
+        style={'fontFamily': 'Roboto, Arial, sans-serif'},
+    )
+
+    # Link
+    link = dash.html.P([
+        dash.dcc.Link('More info ↗', href=search_result.iloc[0]['Wikipedia'], target='_blank'),
+    ], style = default_text_style)
+
+    # Children
+    children = [bio_text, link]
+
+    # Return
+    if os.path.exists(councillor_profile_pic):
+        return councillor_profile_pic, children
+    return BLANK_PROFILE_PIC, children
