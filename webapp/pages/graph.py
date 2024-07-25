@@ -36,7 +36,7 @@ layout = dash.html.Div([
             dash.dcc.Loading(
                 dash.dcc.Graph(
                     id='figure-1',
-                    style={'border': '0.5px black dotted'}
+                    # style={'border': '0.5px black dotted'}
                     # style={'width': '80%', 'height': '100%', 'margin': '0 auto', 'border': '0.5px black solid'}
                 ),
                 type='dot'
@@ -124,13 +124,18 @@ layout = dash.html.Div([
 @dash.callback(
     dash.Output('figure-1', 'figure'),
     dash.Output('councillor-dropdown', 'options'),
-    dash.Output('councillor-dropdown', 'value'),
+    dash.Output('profile-picture', 'src'),
+    dash.Output('bio-text', 'children'),
     dash.Input('year-slider', 'value'),
-    dash.Input('dimension-selector', 'value')
+    dash.Input('dimension-selector', 'value'),
+    dash.Input('councillor-dropdown', 'value')
 )
-def update_figure(years: list, dimensions: int):
+def update_figure(years: list, dimensions: int, selected_councillor: str):
+    # Plot
     min_year, max_year = min(years), max(years)
-    figure, councillors = generate_graph(raw_councillor_df, dimensions, 1, min_year, max_year, return_councillors=True)
+    figure, councillors = generate_graph(raw_councillor_df, dimensions, 1, min_year, max_year, select_councillor=selected_councillor, return_councillors=True)
+    
+    # Councillor dropdown
     dropdown_options = []
     councillors = set(councillors)
     for councillor in sorted(raw_councillor_df.index):
@@ -142,39 +147,33 @@ def update_figure(years: list, dimensions: int):
         }
         dropdown_options.append(option)
 
-    return figure, dropdown_options, None
-
-@dash.callback(
-    # dash.Output('figure-1', 'figure'),
-    dash.Output('profile-picture', 'src'),
-    dash.Output('bio-text', 'children'),
-    dash.Input('councillor-dropdown', 'value')
-)
-def show_councillor_info(councillor: str):
-    if councillor is None:
-        return BLANK_PROFILE_PIC, ['']
-        
     # Pic
-    councillor_profile_pic = f'assets/{councillor}.jpg'
+    councillor_profile_pic = BLANK_PROFILE_PIC
+    if selected_councillor:
+        councillor_profile_pic = f'assets/{councillor}.jpg'
+        if not os.path.exists(councillor_profile_pic):
+            councillor_profile_pic = BLANK_PROFILE_PIC
 
-    # Text
-    query = pd.DataFrame([councillor], columns=['councillor'])
-    search_result = pd.merge(biographies_df, query, how='inner', left_on='Councillor', right_on='councillor')
-    assert not search_result.empty
-    bio_text = dash.html.P(
-        search_result.iloc[0]['Biography'],
-        style={'fontFamily': 'Roboto, Arial, sans-serif'},
-    )
+    # Biography
+    if selected_councillor:
+        # Text
+        query = pd.DataFrame([selected_councillor], columns=['councillor'])
+        search_result = pd.merge(biographies_df, query, how='inner', left_on='Councillor', right_on='councillor')
+        assert not search_result.empty
+        bio_text = dash.html.P(
+            search_result.iloc[0]['Biography'],
+            style={'fontFamily': 'Roboto, Arial, sans-serif'},
+        )
 
-    # Link
-    link = dash.html.P([
-        dash.dcc.Link('More info ↗', href=search_result.iloc[0]['Wikipedia'], target='_blank'),
-    ], style = default_text_style)
+        # Link
+        link = dash.html.P([
+            dash.dcc.Link('More info ↗', href=search_result.iloc[0]['Wikipedia'], target='_blank'),
+        ], style = default_text_style)
 
-    # Children
-    children = [bio_text, link]
+        biography = [bio_text, link]
 
-    # Return
-    if os.path.exists(councillor_profile_pic):
-        return councillor_profile_pic, children
-    return BLANK_PROFILE_PIC, children
+    else:
+        biography = ['']
+
+    return figure, dropdown_options, councillor_profile_pic, biography
+
