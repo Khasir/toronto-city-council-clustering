@@ -11,7 +11,7 @@ from sklearn.decomposition import PCA
 default_text_style = {'textAlign': 'center', 'fontFamily': 'Roboto, Arial, sans-serif'}
 title_text_style = {'textAlign': 'center', 'fontFamily': 'Roboto, Arial, sans-serif', 'color': '#144475'}
 CACHE_DIR = './.cache/'  # Contains cached Dataframes
-BLANK_PROFILE_PIC = 'assets/blank-profile-picture-973460_640.png'
+BLANK_PROFILE_PIC = 'assets/img/blank-profile-picture-973460_640.png'
 PAST_MAYORS = 'Olivia Chow', 'John Tory', 'Rob Ford', 'David Miller'
 
 

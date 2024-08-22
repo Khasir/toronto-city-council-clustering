@@ -150,9 +150,11 @@ def update_figure(years: list, dimensions: int, selected_councillor: str):
     # Pic
     councillor_profile_pic = BLANK_PROFILE_PIC
     if selected_councillor:
-        councillor_profile_pic = f'assets/{councillor}.jpg'
+        councillor_profile_pic = f'assets/img/{selected_councillor}.jpg'
         if not os.path.exists(councillor_profile_pic):
-            councillor_profile_pic = BLANK_PROFILE_PIC
+            councillor_profile_pic = f'assets/img/{selected_councillor}.png'
+            if not os.path.exists(councillor_profile_pic):
+                councillor_profile_pic = BLANK_PROFILE_PIC
 
     # Biography
     if selected_councillor:
