@@ -10,7 +10,7 @@ In the example below, we can see that Alejandra Bravo voted "yes" to agenda item
 |--|--|--|--|--|--|--|--|--|--|--|--|
 |3|2022-2026|Alejandra|Bravo|City Council||2023.FM1.8|Election of the Speaker and Deputy Speaker|Nomination of a Member|Yes|Carried, 25-1|Majority required - Appoint Councillor Nunziata as Speaker|
 
-I gathered all these rows and reformmated them into a new table. The table above has each vote on a separate row, but for my purposes, I needed to concentrate the rows to show how a given councillor voted for **all** agenda items. For example:
+I gathered all these rows and reformated them into a new table. The table above has each vote on a separate row, but for my purposes, I needed to concentrate the rows to show how a given councillor voted for **all** agenda items. For example:
 
 |Councillor|2009.IA30.5|2009.RM30.5|2009.EX28.8|(skipping thousands of items)|2024.PB16.9|
 |--|--|--|--|--|--|
@@ -33,8 +33,6 @@ Well, if we could simplify this table down to just 2 or 3 columns for each counc
 
 Luckily for you, there's a technique called [dimensionality reduction](https://www.ibm.com/topics/dimensionality-reduction)! Imagine that for agenda items #1 and #2, the results were exactly the same, right down to who voted yes or no, and who was absent. In that case, item #2 confirms the councillors' behaviour but it doesn't tell us anything new about them when compared to item #1. So we can safely remove either one of the items because no new information is gained.
 
-What this technique allows us to do is to simplify this table down to just a few columns, which is just what we wanted! After that, we can graph each councillor as a point where the coordinates are the reduced columns.*
+What this technique allows us to do is to simplify this table down to just a few columns, which is just what we wanted! After that, we can graph each councillor as a point where the coordinates are the reduced columns. *For this reason, I'm hesitant to label the axes as "Conservative" or "Liberal" because the algorithm doesn't necessarily pick up on that, as it would be a subjective interpretation of the data.*
 
-*For this reason, I'm hesitant to label the axes as "Conservative" or "Liberal" because the algorithm doesn't necessarily pick up on that, and is a subjective interpretation of the data.
-
-Next, spend an hour [clustering](https://www.nvidia.com/en-us/glossary/k-means/) and colouring the councillors by proximity to each other. Spend days figuring out how to add some fancy buttons and sliders. Voilà! You've got your interactive graph.
+Next, spend an hour [clustering](https://www.nvidia.com/en-us/glossary/k-means/) and trying out colours based on groupings. Spend weeks to months figuring out how to add some fancy buttons and sliders for a nice UI. Voilà! You've got your interactive graph.

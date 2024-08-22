@@ -53,7 +53,7 @@ layout = dash.html.Div([
                             {'label': '3D', 'value': 3},
                             # {'label': '4D', 'value': 4, 'disabled': True, 'title': 'JK'}
                         ],
-                        value=2,
+                        value=3,
                         id='dimension-selector',
                         labelStyle=default_text_style
                     ),
@@ -134,7 +134,7 @@ def update_figure(years: list, dimensions: int, selected_councillor: str):
     # Plot
     min_year, max_year = min(years), max(years)
     figure, councillors = generate_graph(raw_councillor_df, dimensions, 1, min_year, max_year, select_councillor=selected_councillor, return_councillors=True)
-    
+
     # Councillor dropdown
     dropdown_options = []
     councillors = set(councillors)
