@@ -110,6 +110,7 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
                 'title': 'Legend',
                 'font': {'family': 'Roboto, Arial'}
             },
+            showlegend=False,
         )
 
     elif num_dimensions == 2:
@@ -151,6 +152,7 @@ def create_figure(df: pd.DataFrame, num_dimensions: int) -> go.Figure:
                 'title': 'Legend',
                 'font': {'family': 'Roboto, Arial'}
             },
+            showlegend=False,
             plot_bgcolor='white',
             # plot_bgcolor='#ebdec7',
         )
