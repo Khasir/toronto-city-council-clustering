@@ -1,5 +1,11 @@
 I started this project because I wanted to understand Toronto's city councillors when it comes to enacting similar policies and behaving in municipal politics. I went in just wanting to see if councillors would group together at all, and I was pleasantly surprised to see that they do!
 
+## What is this?
+
+The idea behind this graph is that we can group councillors together based on how they vote in council meetings. Each point represents a different councillor. Councillors who vote together are grouped closer to one another. 
+
+It's interesting how some patterns emerge! For example, when limiting the graph to the year 2020, councillors are much closer to each another than in other years.
+
 ## How it works
 
 First, I downloaded the past City Council voting records from [Toronto's Open Data Catalogue](https://open.toronto.ca/dataset/members-of-toronto-city-council-voting-record/). These files record how over 90 city councillors have voted on municipal agenda items dating back to 2009. (One of the source files is labelled as dating from 2006, but it isn't complete.)
