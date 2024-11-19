@@ -8,16 +8,19 @@ if [ -d ./webapp/__pycache__ ]; then
     rm -r ./webapp/__pycache__
 fi
 
-cp ./notebooks/output/raw_councillor_df.csv ./webapp/
+if [ ! -f ./webapp/raw_councillor_df.csv ]; then
+    echo "File not found: ./webapp/raw_councillor_df.csv"
+    echo "Run: python -m scripts.regenerate_dataframe "
+    exit 1
+fi
 
 # See: https://cloud.google.com/sdk/gcloud/reference/run/deploy
+# use --cpu-throttling to save cost
 gcloud run deploy toronto-councillor-clustering-p \
     --allow-unauthenticated \
-    --cpu-throttling \
     --cpu 1 \
     --memory 1Gi \
     --source webapp \
-    --max-instances 2 \
+    --max-instances 5 \
     --region us-east1
 
-rm ./webapp/raw_councillor_df.csv

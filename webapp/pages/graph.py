@@ -13,7 +13,8 @@ dash.register_page(
     description="Visualize Toronto's city councillors based on how closely they vote with one another."
 )
 
-# Generate DF with the notebook provided: cluster_councillors.ipynb
+# Generate DF with the script regenerate_dataframe.py
+# or the notebook cluster_councillors.ipynb
 try:
     raw_councillor_df = pd.read_csv('./raw_councillor_df.csv', index_col=0)
 except FileNotFoundError:

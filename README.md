@@ -22,7 +22,7 @@ Install [gcloud](https://cloud.google.com/sdk/docs/install).
 
 
 ## Updating Data
-Currently, the way to update data is to manually download the CSVs from [Toronto Open Data](https://open.toronto.ca/dataset/members-of-toronto-city-council-voting-record/) to the `./data` folder. Then run the Jupyter Notebook `cluster_councillors.ipynb` to generate the required dataframe for plotting.
+Currently, the way to update data is to manually download the CSVs from [Toronto Open Data](https://open.toronto.ca/dataset/members-of-toronto-city-council-voting-record/) to the `./data` folder. Then run the script `regenerate_dataframe.py` or the Jupyter Notebook `cluster_councillors.ipynb` to generate the required dataframe for plotting.
 
 
 ## Ideas
