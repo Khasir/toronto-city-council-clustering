@@ -15,13 +15,22 @@ app.layout = html.Div([
     html.P(
         children=[
             "Data from ",
-            html.A("2009 – 2024", href="https://open.toronto.ca/dataset/members-of-toronto-city-council-voting-record/", target="_blank"),
-            " // Made by ",
+            html.A("↗ 2009 – 2024", href="https://open.toronto.ca/dataset/members-of-toronto-city-council-voting-record/", target="_blank"),
+            html.Br(),
+            "Made by ",
             html.A("Khasir", href="mailto:khasir.hean@gmail.com"),
             " 2024"
         ],
         style=default_text_style
     ),
+    html.P(
+        children=[
+            html.A("GitHub", href="https://github.com/Khasir/toronto-city-council-clustering", target="_blank"),
+            " // ",
+            html.A("LinkedIn", href="https://www.linkedin.com/in/khasir-hean/", target="_blank"),
+        ],
+        style=default_text_style
+    )
 ])
 
 if __name__ == '__main__':

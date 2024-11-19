@@ -21,6 +21,7 @@ gcloud run deploy toronto-councillor-clustering-p \
     --cpu 1 \
     --memory 1Gi \
     --source webapp \
+    --min-instances 1 \
     --max-instances 5 \
     --region us-east1
 

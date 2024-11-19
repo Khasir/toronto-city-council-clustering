@@ -47,6 +47,7 @@ layout = dash.html.Div([
         # Options
         dash.html.Div([
             dash.html.Div([
+                dash.html.Div(None, style={'width': '100%', 'height': '2%'}),
                 dash.html.Div([
                     # 2D / 3D
                     dash.dcc.RadioItems([
@@ -56,9 +57,13 @@ layout = dash.html.Div([
                         ],
                         value=3,
                         id='dimension-selector',
-                        labelStyle=default_text_style
+                        inline=True,
+                        labelStyle=default_text_style,
                     ),
                 ]),
+                dash.html.Div(None, style={'width': '100%', 'height': '2%'}),
+                dash.html.Hr(),
+                dash.html.Div(None, style={'width': '100%', 'height': '2%'}),
                 # Councillor list
                 dash.html.Div([
                     dash.dcc.Dropdown(
@@ -69,6 +74,7 @@ layout = dash.html.Div([
                         style={'fontFamily': 'Roboto, Arial, sans-serif'},
                     )
                 ]),
+                dash.html.Div(None, style={'width': '100%', 'height': '2%'}),
                 # Profile pic
                 dash.html.Div([
                     dash.html.Img(
@@ -77,6 +83,7 @@ layout = dash.html.Div([
                         width='100%',
                     )
                 ]),
+                # dash.html.Div(None, style={'width': '100%', 'height': '1%'}),
                 # Biographical blurb
                 dash.html.Div([''],
                     id='bio-text'
@@ -170,7 +177,7 @@ def update_figure(years: list, dimensions: int, selected_councillor: str):
 
         # Link
         link = dash.html.P([
-            dash.dcc.Link('More info ↗', href=search_result.iloc[0]['Wikipedia'], target='_blank'),
+            dash.dcc.Link('↗ More info', href=search_result.iloc[0]['Wikipedia'], target='_blank'),
         ], style = default_text_style)
 
         biography = [bio_text, link]
