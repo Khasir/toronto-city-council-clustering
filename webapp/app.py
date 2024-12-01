@@ -8,7 +8,7 @@ app = Dash(__name__, use_pages=True)
 server = app.server  # Workaround for gunicorn with Dash
 
 app.layout = html.Div([
-    html.H1(children="[WIP] Toronto City Councillors by Voting Records", style=title_text_style),
+    html.H1(children="[WIP] Toronto City Councillor Viz", style=title_text_style),
     html.P(children="Data last updated November 19, 2024.", style={'textAlign': 'center', 'fontFamily': 'Roboto, Arial, sans-serif', 'font-style': 'italic'}),
     page_container,
     html.Hr(style={'align': 'center', 'width': '15%', 'size': '0.5'}),
